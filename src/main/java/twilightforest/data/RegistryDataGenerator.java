@@ -24,6 +24,7 @@ public class RegistryDataGenerator extends DatapackBuiltinEntriesProvider {
 			.add(Registries.STRUCTURE, TFStructures::bootstrap)
 			.add(Registries.STRUCTURE_SET, TFStructureSets::bootstrap)
 			.add(Registries.CONFIGURED_CARVER, TFCaveCarvers::bootstrap)
+			.add(Registries.NOISE, TFNoises::bootstrap)
 			.add(Registries.NOISE_SETTINGS, TFDimensionSettings::bootstrapNoise)
 			.add(TFRegistries.Keys.BIOME_STACK, BiomeLayerStack::bootstrap)
 			.add(Registries.DIMENSION_TYPE, TFDimensionSettings::bootstrapType)

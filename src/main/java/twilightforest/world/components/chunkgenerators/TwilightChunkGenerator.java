@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import twilightforest.init.TFBiomes;
 import twilightforest.init.TFBlocks;
 import twilightforest.init.TFLandmark;
+import twilightforest.init.TFNoises;
 import twilightforest.util.LegacyLandmarkPlacements;
 import twilightforest.util.Vec2i;
 import twilightforest.world.components.biomesources.TFBiomeProvider;
@@ -363,7 +364,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 		super.buildSurface(world, manager, random, chunk);
 
-		this.darkForestCanopyHeight.ifPresent(integer -> this.addDarkForestCanopy(world, chunk, integer));
+		this.darkForestCanopyHeight.ifPresent(integer -> this.addDarkForestCanopy(random, world, chunk, integer));
 
 		addGlaciers(world, chunk);
 	}
@@ -728,7 +729,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 	/**
 	 * Adds dark forest canopy.  This version uses the "unzoomed" array of biomes used in land generation to determine how many of the nearby blocks are dark forest
 	 */
-	private void addDarkForestCanopy(WorldGenRegion primer, ChunkAccess chunk, int height) {
+	private void addDarkForestCanopy(RandomState randomState, WorldGenRegion primer, ChunkAccess chunk, int height) {
 		BlockPos blockpos = primer.getCenter().getWorldPosition();
 		int[] thicks = new int[5 * 5];
 		boolean biomeFound = false;
@@ -797,7 +798,7 @@ public class TwilightChunkGenerator extends ChunkGeneratorWrapper {
 
 					// just use the same noise generator as the terrain uses for stones
 					//int noise = Math.min(3, (int) (depthBuffer[dZ & 15 | (dX & 15) << 4] / 1.25f));
-					int noise = 0;// FIXME [1.18] Math.min(3, (int) (this.surfaceNoiseGetter.getSurfaceNoiseValue((blockpos.getX() + dX) * 0.0625D, (blockpos.getZ() + dZ) * 0.0625D, 0.0625D, dX * 0.0625D) * 15F / 1.25F));
+					int noise = (int) Math.min(3, (randomState.getOrCreateNoise(TFNoises.DARK_FOREST_LEAVES).getValue(pos.getX(), 0, pos.getZ()) * 15F / 1.25F));
 
 					// manipulate top and bottom
 					int treeBottom = pos.getY() + height - (int) (thickness * 0.5F);
